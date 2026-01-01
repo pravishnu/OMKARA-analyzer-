@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atma Prajna International Institute – Yoga App Series | APY-SAPTĀHAM Oṁkāra Analyzer</title>
+  <style>
+    :root{
+      --bg:#f4f6fb;
+      --ink:#0f172a;
+      --muted:#475569;
+      --card:#ffffff;
+      --line:#e2e8f0;
+      --brand1:#c7a2ff; /* lavender */
+      --brand2:#bfe8ff; /* pale blue */
+      --brand3:#111827; /* near-black */
+      --accent:#3b82f6;
+      --good:#16a34a;
+      --warn:#d97706;
+      --bad:#dc2626;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg),#fff);
+      color:var(--ink);
+    }
+    header{
+      background: radial-gradient(circle at 10% 10%, var(--brand2), transparent 35%),
+                  radial-gradient(circle at 90% 30%, var(--brand1), transparent 40%),
+                  linear-gradient(90deg, #1f2a6b, #2a1f6b);
+      color:#fff;
+      padding:14px 14px 10px;
+      position:sticky; top:0; z-index:10;
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+    .hdrTop{display:flex; align-items:center; gap:12px;}
+    .logoBox{
+      width:44px; height:44px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.25));
+      display:grid; place-items:center;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.35);
+      flex:0 0 auto;
+    }
+    .logoBox img{width:100%; height:100%; object-fit:cover}
+    .hdrTitles{line-height:1.15}
+    .hdrTitles .t1{font-weight:800; font-size:14px; opacity:.95}
+    .hdrTitles .t2{font-weight:800; font-size:18px; letter-spacing:.2px}
+    .hdrTitles .t3{font-size:12px; opacity:.85}
+    .wrap{max-width:1180px; margin:0 auto; padding:14px;}
+    .grid{
+      display:grid; gap:12px;
+      grid-template-columns: 380px 1fr;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow: 0 10px 30px rgba(15,23,42,.06);
+      padding:12px;
+    }
+    h3{margin:0 0 10px; font-size:14px; color:var(--muted); letter-spacing:.2px}
+    .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .row > *{flex:1}
+    label{display:block; font-size:12px; color:var(--muted); margin:8px 0 4px}
+    input, select, button, textarea{
+      width:100%;
+      padding:10px 10px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+    }
+    textarea{min-height:68px; resize:vertical}
+    button{
+      cursor:pointer;
+      border:1px solid rgba(59,130,246,.35);
+      background:linear-gradient(180deg,#eff6ff,#ffffff);
+      font-weight:700;
+    }
+    button.primary{
+      background:linear-gradient(180deg,#2563eb,#1d4ed8);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    button.danger{
+      background:linear-gradient(180deg,#ef4444,#dc2626);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    button.good{
+      background:linear-gradient(180deg,#22c55e,#16a34a);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line); background:#fff;
+      font-size:12px; color:var(--muted);
+    }
+    .kpiGrid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px}
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:linear-gradient(180deg,#fff,#fbfdff);
+    }
+    .kpi .k{font-size:12px; color:var(--muted)}
+    .kpi .v{font-size:20px; font-weight:900; margin-top:2px}
+    .kpi .s{font-size:12px; color:var(--muted); margin-top:2px}
+    .sep{height:1px; background:var(--line); margin:10px 0}
+    canvas{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#050b1c;
+    }
+    .canvasWrap{display:grid; gap:10px}
+    .scrollX{
+      overflow-x:auto; padding-bottom:6px;
+      border-radius:14px;
+    }
+    .miniNote{
+      font-size:12px; color:var(--muted);
+      line-height:1.35;
+    }
+    .footer{
+      margin-top:12px;
+      font-size:12px; color:rgba(255,255,255,.85);
+      opacity:.95;
+    }
+    .small{font-size:12px; color:var(--muted)}
+    .tag{
+      display:inline-block; font-size:12px;
+      padding:4px 8px; border-radius:999px;
+      border:1px solid var(--line); background:#fff;
+      margin-right:6px; margin-top:6px;
+    }
+    .improveBox{
+      border:1px dashed rgba(59,130,246,.45);
+      background:rgba(59,130,246,.06);
+      border-radius:14px;
+      padding:10px;
+      font-size:12px;
+      color:#1e293b;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="hdrTop">
+    <div class="logoBox" title="YRT / RMM / APII Logo (placeholder)">
+      <!-- Replace with your real logo file path if hosted; for offline, keep blank or embed base64 -->
+      <img alt="Logo" src="" onerror="this.style.display='none'"/>
+      <span style="font-weight:900; font-size:12px; opacity:.9">YRT</span>
+    </div>
+    <div class="hdrTitles">
+      <div class="t1">Atma Prajna International Institute – Yoga App Series</div>
+      <div class="t2">APY-SAPTĀHAM • Oṁkāra Voice Analyzer</div>
+      <div class="t3">Offline • Multi-Profile • Before/After Session Comparison • Export Ready</div>
+    </div>
+    <div style="margin-left:auto" class="pill" id="statusPill">Status: Idle</div>
+  </div>
+  <div class="footer">Powered by YOGAI | APII & YRT–RMM Lineage.</div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- LEFT: Controls / Profiles / Sessions -->
+    <div class="card">
+      <h3>1) Profile, Mode, and Measurement Controls</h3>
+
+      <label>Profile (multi-user)</label>
+      <div class="row">
+        <select id="profileSel"></select>
+        <button id="newProfileBtn">New</button>
+      </div>
+
+      <label>Profile Name</label>
+      <input id="profileName" placeholder="e.g., Sādhaka 01 / Name" />
+
+      <div class="row">
+        <div>
+          <label>Test Type</label>
+          <select id="testType">
+            <option value="PRE">PRE (Before Practice)</option>
+            <option value="POST">POST (After Practice)</option>
+            <option value="MID">MID (Intermediate)</option>
+          </select>
+        </div>
+        <div>
+          <label>Target Note (optional)</label>
+          <input id="targetNote" placeholder="e.g., steady Oṁ ~ 136 Hz" />
+        </div>
+      </div>
+
+      <label>FFT Size (Frequency vs Time Resolution)</label>
+      <select id="fftSize">
+        <option value="2048">2048 (Δf ~ 23.4 Hz @48k)</option>
+        <option value="4096">4096 (Δf ~ 11.7 Hz @48k)</option>
+        <option value="8192" selected>8192 (Δf ~ 5.9 Hz @48k) • Recommended</option>
+        <option value="16384">16384 (Δf ~ 2.9 Hz @48k) • Finest pitch</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label>Hop / Overlap</label>
+          <select id="hopMode">
+            <option value="0.5">50% overlap (balanced)</option>
+            <option value="0.75" selected>75% overlap (smooth)</option>
+            <option value="0.875">87.5% overlap (very smooth)</option>
+          </select>
+        </div>
+        <div>
+          <label>Smoothing (spectrum)</label>
+          <select id="smooth">
+            <option value="0.70">High</option>
+            <option value="0.85" selected>Very High</option>
+            <option value="0.95">Ultra (slow)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>2) Recording Workflow (Tap = Start/Pause/Resume, Long Stop)</h3>
+      <div class="row">
+        <button class="primary" id="btnMain">Start</button>
+        <button class="danger" id="btnStop">Stop</button>
+      </div>
+      <div class="row">
+        <button class="good" id="btnMark">Save Snapshot (PRE/POST)</button>
+        <button id="btnClear">Clear Live Buffers</button>
+      </div>
+
+      <label>Notes (optional)</label>
+      <textarea id="notes" placeholder="Describe the practice, breath state, mind state, Oṁ steadiness, any strain, etc."></textarea>
+
+      <div class="sep"></div>
+
+      <h3>3) Exports and Records</h3>
+      <div class="row">
+        <button id="btnExportJSON">Export JSON</button>
+        <button id="btnExportCSV">Export CSV</button>
+      </div>
+      <div class="row">
+        <button id="btnPrint">Print / Save as PDF</button>
+        <button id="btnDeleteAll" class="danger">Delete All Saved Data</button>
+      </div>
+
+      <div class="miniNote">
+        <div class="improveBox">
+          <b>Practice Discipline Note (Traditional):</b> Record in a quiet place, same posture, same distance to phone,
+          and chant Oṁ with steady breath. The improvement is meaningful only when conditions remain constant.
+        </div>
+        <div style="margin-top:8px">
+          <span class="tag">Offline</span>
+          <span class="tag">LocalStorage</span>
+          <span class="tag">Waveform</span>
+          <span class="tag">Spectrum</span>
+          <span class="tag">Spectrogram</span>
+          <span class="tag">3D Waterfall</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Visuals + KPIs -->
+    <div class="card">
+      <h3>Live Metrics (Auto) • 5-Minute Visual Window • Multi-Colored Render</h3>
+
+      <div class="kpiGrid" style="margin-bottom:10px">
+        <div class="kpi">
+          <div class="k">Fundamental Pitch (F0)</div>
+          <div class="v" id="kpiF0">—</div>
+          <div class="s" id="kpiF0s">Hz</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Amplitude (RMS)</div>
+          <div class="v" id="kpiRMS">—</div>
+          <div class="s" id="kpiRMSs">0–1 (normalized)</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Peak Level</div>
+          <div class="v" id="kpiDB">—</div>
+          <div class="s">dBFS (approx)</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Harmonic Energy Ratio</div>
+          <div class="v" id="kpiHER">—</div>
+          <div class="s">higher = richer Oṁ</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Spectral Centroid</div>
+          <div class="v" id="kpiSC">—</div>
+          <div class="s">Hz (brightness)</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Jitter Estimate</div>
+          <div class="v" id="kpiJit">—</div>
+          <div class="s">% (lower = steadier)</div>
+        </div>
+      </div>
+
+      <div class="canvasWrap">
+        <div>
+          <div class="small">Waveform (time domain)</div>
+          <canvas id="wave" width="1100" height="160"></canvas>
+        </div>
+
+        <div>
+          <div class="small">Spectrum (single line render)</div>
+          <canvas id="spec" width="1100" height="220"></canvas>
+        </div>
+
+        <div>
+          <div class="small">Spectrogram (multi-colored) • 5-minute window (horizontal scroll)</div>
+          <div class="scrollX">
+            <canvas id="gram" width="12000" height="260"></canvas>
+          </div>
+        </div>
+
+        <div>
+          <div class="small">3D Waterfall View (pseudo-3D multi-colored slices)</div>
+          <canvas id="water3d" width="1100" height="280"></canvas>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>Saved Sessions (Per Profile)</h3>
+      <div id="savedList" class="miniNote">No saved sessions yet.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   APY-SAPTĀHAM Oṁkāra Analyzer (Single-file Offline)
+   - WebAudio mic capture
+   - FFT line spectrum + spectrogram + pseudo 3D waterfall
+   - Pitch estimate (autocorrelation), RMS, peak dBFS, centroid, harmonic ratio, jitter
+   - Save PRE/POST snapshots and export JSON/CSV and Print/PDF
+   ============================================================ */
+
+const $ = (id)=>document.getElementById(id);
+
+const STORAGE_KEY = "APY_OMKARA_ANALYZER_V1";
+const state = {
+  audioCtx:null, stream:null, source:null, analyser:null,
+  timeData:null, freqData:null,
+  running:false, paused:false,
+  fftSize:8192, overlap:0.75, smooth:0.85,
+  sampleRate:48000,
+  gramX:0,
+  gramMaxCols:12000,
+  gramColsPerSec:20,       // 20 fps columns
+  gramWindowSeconds:300,   // 5 minutes
+  lastFrameT:0,
+  pitchHistory:[],
+  rmsHistory:[],
+  lastPitch:null,
+  pressTimer:null,
+  profiles:[],
+  activeProfileId:null,
+  dbFS:-120
+};
+
+// ---------- Utility ----------
+function nowISO(){ return new Date().toISOString(); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function fmt(n, d=1){ if(!isFinite(n)) return "—"; return Number(n).toFixed(d); }
+function mean(arr){ if(!arr.length) return NaN; return arr.reduce((a,b)=>a+b,0)/arr.length; }
+function stdev(arr){
+  if(arr.length<2) return NaN;
+  const m = mean(arr);
+  const v = mean(arr.map(x=>(x-m)*(x-m)));
+  return Math.sqrt(v);
+}
+function downloadText(filename, text){
+  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
+}
+function setStatus(txt){
+  $("statusPill").textContent = "Status: " + txt;
+}
+function infernoColor(t){
+  // t in [0,1] -> RGB (approx inferno-like; compact LUT-free)
+  t = clamp(t,0,1);
+  const r = Math.floor(255 * clamp( (Math.sin((t*3.14)*0.9)+0.2) * 0.65 + t*0.55, 0, 1));
+  const g = Math.floor(255 * clamp( (t*t*0.9) + 0.05, 0, 1));
+  const b = Math.floor(255 * clamp( (1 - t) * 0.55 + Math.sin(t*3.14)*0.15, 0, 1));
+  return `rgb(${r},${g},${b})`;
+}
+
+// ---------- Data Model ----------
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return {profiles:[]};
+    return JSON.parse(raw);
+  }catch(e){
+    return {profiles:[]};
+  }
+}
+function saveDB(db){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+}
+function ensureProfile(){
+  const db = loadDB();
+  if(!db.profiles || !db.profiles.length){
+    const p = {id: crypto.randomUUID(), name:"Sādhaka 01", sessions:[]};
+    db.profiles = [p];
+    saveDB(db);
+  }
+  state.profiles = db.profiles;
+  state.activeProfileId = db.profiles[0].id;
+}
+function getActiveProfile(){
+  const db = loadDB();
+  const p = (db.profiles||[]).find(x=>x.id===state.activeProfileId);
+  return {db, p};
+}
+function refreshProfilesUI(){
+  const db = loadDB();
+  const sel = $("profileSel");
+  sel.innerHTML = "";
+  (db.profiles||[]).forEach(p=>{
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = p.name;
+    sel.appendChild(opt);
+  });
+  sel.value = state.activeProfileId;
+  const active = (db.profiles||[]).find(x=>x.id===state.activeProfileId);
+  $("profileName").value = active ? active.name : "";
+  renderSavedList();
+}
+function renderSavedList(){
+  const {db,p} = getActiveProfile();
+  const host = $("savedList");
+  if(!p || !p.sessions || !p.sessions.length){
+    host.innerHTML = "No saved sessions yet.";
+    return;
+  }
+  const rows = p.sessions.slice().reverse().map(s=>{
+    const prepost = s.testType;
+    const f0 = isFinite(s.metrics?.avgF0) ? `${fmt(s.metrics.avgF0,1)} Hz` : "—";
+    const rms = isFinite(s.metrics?.avgRMS) ? fmt(s.metrics.avgRMS,3) : "—";
+    const jit = isFinite(s.metrics?.jitterPct) ? `${fmt(s.metrics.jitterPct,2)}%` : "—";
+    const her = isFinite(s.metrics?.harmonicEnergyRatio) ? fmt(s.metrics.harmonicEnergyRatio,2) : "—";
+    const when = new Date(s.createdAt).toLocaleString();
+    return `
+      <div style="border:1px solid var(--line); border-radius:14px; padding:10px; margin:8px 0; background:#fff">
+        <div style="font-weight:900">${prepost} • ${when}</div>
+        <div>F0: <b>${f0}</b> | RMS: <b>${rms}</b> | Jitter: <b>${jit}</b> | Harmonic Ratio: <b>${her}</b></div>
+        <div style="color:var(--muted)">${(s.notes||"").replace(/[<]/g,"&lt;")}</div>
+      </div>
+    `;
+  }).join("");
+  host.innerHTML = rows;
+}
+
+// ---------- Audio + Analysis ----------
+async function startAudio(){
+  if(state.audioCtx) return;
+  state.fftSize = parseInt($("fftSize").value,10);
+  state.overlap = parseFloat($("hopMode").value);
+  state.smooth = parseFloat($("smooth").value);
+
+  state.stream = await navigator.mediaDevices.getUserMedia({
+    audio:{
+      echoCancellation:false,
+      noiseSuppression:false,
+      autoGainControl:false
+    }
+  });
+
+  // Note: sampleRate request may be ignored by some browsers/devices
+  state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  state.sampleRate = state.audioCtx.sampleRate;
+
+  state.source = state.audioCtx.createMediaStreamSource(state.stream);
+  state.analyser = state.audioCtx.createAnalyser();
+  state.analyser.fftSize = state.fftSize;
+  state.analyser.smoothingTimeConstant = state.smooth;
+
+  state.timeData = new Float32Array(state.analyser.fftSize);
+  state.freqData = new Uint8Array(state.analyser.frequencyBinCount);
+
+  // connect
+  state.source.connect(state.analyser);
+
+  setStatus(`Ready • Fs=${state.sampleRate}Hz • FFT=${state.fftSize}`);
+}
+
+function stopAudioHard(){
+  try{
+    if(state.source) state.source.disconnect();
+    if(state.analyser) state.analyser.disconnect?.();
+  }catch(_){}
+  try{
+    if(state.stream){
+      state.stream.getTracks().forEach(t=>t.stop());
+    }
+  }catch(_){}
+  try{
+    state.audioCtx && state.audioCtx.close();
+  }catch(_){}
+  state.audioCtx=null; state.stream=null; state.source=null; state.analyser=null;
+}
+
+function computeRMS(buf){
+  let s=0;
+  for(let i=0;i<buf.length;i++){
+    const v=buf[i];
+    s += v*v;
+  }
+  return Math.sqrt(s/buf.length);
+}
+function rmsToDbFS(rms){
+  // rough; assumes full-scale = 1.0
+  const v = Math.max(rms, 1e-9);
+  return 20*Math.log10(v);
+}
+function estimatePitchAutoCorr(buf, sampleRate){
+  // Basic autocorrelation pitch estimate; works well for stable Oṁ-like tones
+  const SIZE = buf.length;
+  // remove DC
+  let meanv=0;
+  for(let i=0;i<SIZE;i++) meanv += buf[i];
+  meanv/=SIZE;
+
+  const x = new Float32Array(SIZE);
+  for(let i=0;i<SIZE;i++) x[i]=buf[i]-meanv;
+
+  // energy gate
+  const rms = computeRMS(x);
+  if(rms < 0.005) return NaN;
+
+  // autocorr
+  const minF = 60;   // Oṁ often near 80–250 Hz; keep safe
+  const maxF = 400;
+  const minLag = Math.floor(sampleRate/maxF);
+  const maxLag = Math.floor(sampleRate/minF);
+
+  let bestLag = -1;
+  let best = 0;
+
+  for(let lag=minLag; lag<=maxLag; lag++){
+    let c=0;
+    for(let i=0;i<SIZE-lag;i++){
+      c += x[i]*x[i+lag];
+    }
+    if(c>best){
+      best=c; bestLag=lag;
+    }
+  }
+  if(bestLag<=0) return NaN;
+
+  // parabolic refinement
+  const lag = bestLag;
+  const c0 = corrAt(x, lag-1);
+  const c1 = corrAt(x, lag);
+  const c2 = corrAt(x, lag+1);
+  const denom = (2*c1 - c0 - c2);
+  let delta = 0;
+  if(Math.abs(denom) > 1e-9){
+    delta = 0.5*(c0 - c2)/denom;
+  }
+  const refinedLag = lag + delta;
+  return sampleRate/refinedLag;
+
+  function corrAt(x, lag){
+    if(lag<1) return 0;
+    let c=0;
+    for(let i=0;i<SIZE-lag;i++) c += x[i]*x[i+lag];
+    return c;
+  }
+}
+function spectralCentroid(freqData, sampleRate){
+  // freqData: 0..255 magnitude
+  const N = freqData.length;
+  let num=0, den=0;
+  for(let i=0;i<N;i++){
+    const mag = freqData[i]/255;
+    const f = (i*sampleRate)/(2*N);
+    num += f*mag;
+    den += mag;
+  }
+  return den>1e-6 ? (num/den) : NaN;
+}
+function harmonicEnergyRatio(freqData, sampleRate, f0){
+  // Measures energy near harmonics vs total energy.
+  // This is not a medical metric—just a chant-quality spectral descriptor.
+  if(!isFinite(f0) || f0<=0) return NaN;
+  const N = freqData.length;
+  const nyq = sampleRate/2;
+
+  let total=0;
+  for(let i=0;i<N;i++){
+    const m = (freqData[i]/255);
+    total += m*m;
+  }
+  if(total<=1e-9) return NaN;
+
+  const binsPerHz = N/nyq;
+  const bwHz = Math.max(8, f0*0.08); // tolerance band around harmonic
+  const bwBins = Math.max(2, Math.floor(bwHz*binsPerHz));
+
+  let harm=0;
+  for(let h=1; h<=8; h++){
+    const fh = f0*h;
+    if(fh>=nyq) break;
+    const center = Math.floor(fh*binsPerHz);
+    const a = Math.max(0, center-bwBins);
+    const b = Math.min(N-1, center+bwBins);
+    for(let i=a;i<=b;i++){
+      const m = freqData[i]/255;
+      harm += m*m;
+    }
+  }
+  return harm/total;
+}
+function jitterPercent(pitchHistory){
+  // simple jitter estimate: std of successive diffs / mean pitch
+  if(pitchHistory.length < 6) return NaN;
+  const clean = pitchHistory.filter(x=>isFinite(x) && x>0);
+  if(clean.length < 6) return NaN;
+  const diffs = [];
+  for(let i=1;i<clean.length;i++){
+    diffs.push(Math.abs(clean[i]-clean[i-1]));
+  }
+  const m = mean(clean);
+  const sd = mean(diffs);
+  return (sd/m)*100;
+}
+
+// ---------- Drawing ----------
+const ctxWave = $("wave").getContext("2d");
+const ctxSpec = $("spec").getContext("2d");
+const ctxGram = $("gram").getContext("2d");
+const ctxW3D  = $("water3d").getContext("2d");
+
+function clearCanvases(){
+  ctxWave.clearRect(0,0,$("wave").width,$("wave").height);
+  ctxSpec.clearRect(0,0,$("spec").width,$("spec").height);
+  ctxGram.fillStyle="#050b1c";
+  ctxGram.fillRect(0,0,$("gram").width,$("gram").height);
+  ctxW3D.fillStyle="#050b1c";
+  ctxW3D.fillRect(0,0,$("water3d").width,$("water3d").height);
+  state.gramX=0;
+  state.pitchHistory=[];
+  state.rmsHistory=[];
+  state.lastPitch=null;
+}
+
+function drawWave(buf){
+  const W=$("wave").width, H=$("wave").height;
+  ctxWave.fillStyle="#050b1c";
+  ctxWave.fillRect(0,0,W,H);
+  ctxWave.strokeStyle="rgba(191,232,255,.85)";
+  ctxWave.lineWidth=2;
+  ctxWave.beginPath();
+  for(let i=0;i<buf.length;i++){
+    const x = (i/(buf.length-1))*W;
+    const y = (0.5 - buf[i]*0.45)*H;
+    if(i===0) ctxWave.moveTo(x,y);
+    else ctxWave.lineTo(x,y);
+  }
+  ctxWave.stroke();
+  // midline
+  ctxWave.strokeStyle="rgba(255,255,255,.12)";
+  ctxWave.beginPath(); ctxWave.moveTo(0,H/2); ctxWave.lineTo(W,H/2); ctxWave.stroke();
+}
+
+function drawSpectrum(freqData){
+  const W=$("spec").width, H=$("spec").height;
+  ctxSpec.fillStyle="#050b1c";
+  ctxSpec.fillRect(0,0,W,H);
+
+  // axis labels (minimal)
+  ctxSpec.fillStyle="rgba(255,255,255,.7)";
+  ctxSpec.font="12px system-ui";
+  ctxSpec.fillText("0 Hz", 8, H-10);
+  ctxSpec.fillText(`${Math.round(state.sampleRate/2)} Hz`, W-88, H-10);
+
+  // line render
+  ctxSpec.lineWidth=2;
+  ctxSpec.beginPath();
+  for(let i=0;i<freqData.length;i++){
+    const mag = freqData[i]/255;
+    const x = (i/(freqData.length-1))*W;
+    const y = (1 - Math.pow(mag, 0.65))* (H-24) + 8;
+    if(i===0) ctxSpec.moveTo(x,y);
+    else ctxSpec.lineTo(x,y);
+  }
+  ctxSpec.strokeStyle="rgba(199,162,255,.95)";
+  ctxSpec.stroke();
+}
+
+function drawSpectrogramColumn(freqData){
+  const H=$("gram").height;
+  const x = state.gramX;
+
+  // we show 0..6kHz region mainly (voice); map bins
+  const maxHz = 6000;
+  const nyq = state.sampleRate/2;
+  const maxBin = Math.min(freqData.length-1, Math.floor((maxHz/nyq)*freqData.length));
+
+  for(let y=0;y<H;y++){
+    const frac = 1 - (y/(H-1));
+    const bin = Math.floor(frac*maxBin);
+    const mag = freqData[bin]/255;
+    const t = clamp(Math.pow(mag, 0.55), 0, 1);
+    ctxGram.fillStyle = infernoColor(t);
+    ctxGram.fillRect(x, y, 1, 1);
+  }
+
+  state.gramX = (state.gramX + 1) % state.gramMaxCols;
+}
+
+function drawWaterfall(freqData){
+  const W=$("water3d").width, H=$("water3d").height;
+  ctxW3D.fillStyle="#050b1c";
+  ctxW3D.fillRect(0,0,W,H);
+
+  // Render last ~60 slices from spectrogram canvas by sampling recent columns
+  const slices = 60;
+  const depthStep = 3.8;
+
+  const maxHz = 6000;
+  const nyq = state.sampleRate/2;
+  const maxBin = Math.min(freqData.length-1, Math.floor((maxHz/nyq)*freqData.length));
+
+  for(let s=0;s<slices;s++){
+    const z = s*depthStep;
+    const scale = 1 - (s/(slices*1.35));
+    const baseY = 30 + z;
+    const alpha = 1 - (s/(slices*1.05));
+    const yOffset = baseY;
+
+    ctxW3D.globalAlpha = clamp(alpha, 0.06, 0.9);
+
+    ctxW3D.beginPath();
+    for(let i=0;i<=maxBin;i++){
+      const mag = freqData[i]/255;
+      const t = clamp(Math.pow(mag, 0.6), 0, 1);
+      const x = (i/maxBin) * (W*0.92) + (W*0.04);
+      const y = yOffset + (1 - t)* (H*0.55*scale);
+      if(i===0) ctxW3D.moveTo(x,y);
+      else ctxW3D.lineTo(x,y);
+    }
+    ctxW3D.strokeStyle = "rgba(191,232,255,.35)";
+    ctxW3D.lineWidth = 1.2;
+    ctxW3D.stroke();
+  }
+  ctxW3D.globalAlpha = 1;
+
+  // title
+  ctxW3D.fillStyle="rgba(255,255,255,.85)";
+  ctxW3D.font="12px system-ui";
+  ctxW3D.fillText("3D Waterfall (pseudo)", 10, 18);
+}
+
+// ---------- Live Loop ----------
+function updateKPIs(metrics){
+  $("kpiF0").textContent = isFinite(metrics.f0) ? fmt(metrics.f0,1) : "—";
+  $("kpiRMS").textContent = isFinite(metrics.rms) ? fmt(metrics.rms,3) : "—";
+  $("kpiDB").textContent  = isFinite(metrics.dbfs) ? fmt(metrics.dbfs,1) : "—";
+  $("kpiSC").textContent  = isFinite(metrics.sc) ? fmt(metrics.sc,0) : "—";
+  $("kpiHER").textContent = isFinite(metrics.her) ? fmt(metrics.her,2) : "—";
+  $("kpiJit").textContent = isFinite(metrics.jitterPct) ? fmt(metrics.jitterPct,2) : "—";
+}
+
+function liveFrame(t){
+  if(!state.running || state.paused){
+    requestAnimationFrame(liveFrame);
+    return;
+  }
+  if(!state.analyser){
+    requestAnimationFrame(liveFrame);
+    return;
+  }
+
+  // throttle spectrogram columns to ~gramColsPerSec
+  if(!state.lastFrameT) state.lastFrameT = t;
+  const dt = (t - state.lastFrameT) / 1000;
+  const targetDt = 1/state.gramColsPerSec;
+  if(dt < targetDt){
+    requestAnimationFrame(liveFrame);
+    return;
+  }
+  state.lastFrameT = t;
+
+  state.analyser.getFloatTimeDomainData(state.timeData);
+  state.analyser.getByteFrequencyData(state.freqData);
+
+  const rms = computeRMS(state.timeData);
+  const dbfs = rmsToDbFS(rms);
+  state.dbFS = dbfs;
+
+  const f0 = estimatePitchAutoCorr(state.timeData, state.sampleRate);
+
+  // histories for jitter
+  if(isFinite(f0)){
+    state.pitchHistory.push(f0);
+    if(state.pitchHistory.length > 250) state.pitchHistory.shift();
+  }
+  state.rmsHistory.push(rms);
+  if(state.rmsHistory.length > 250) state.rmsHistory.shift();
+
+  const sc = spectralCentroid(state.freqData, state.sampleRate);
+  const her = harmonicEnergyRatio(state.freqData, state.sampleRate, f0);
+  const jit = jitterPercent(state.pitchHistory);
+
+  const metrics = {f0, rms, dbfs, sc, her, jitterPct: jit};
+
+  drawWave(state.timeData);
+  drawSpectrum(state.freqData);
+  drawSpectrogramColumn(state.freqData);
+  drawWaterfall(state.freqData);
+  updateKPIs(metrics);
+
+  requestAnimationFrame(liveFrame);
+}
+
+// ---------- Save Snapshot ----------
+function computeSnapshotMetrics(){
+  const avgF0 = mean(state.pitchHistory.filter(x=>isFinite(x)));
+  const avgRMS = mean(state.rmsHistory.filter(x=>isFinite(x)));
+  const peakDB = state.dbFS; // last known; for simplicity
+  const jitterPctVal = jitterPercent(state.pitchHistory);
+
+  // harmonic energy ratio and centroid as last-frame approximations
+  const sc = spectralCentroid(state.freqData || new Uint8Array(1), state.sampleRate);
+  const her = harmonicEnergyRatio(state.freqData || new Uint8Array(1), state.sampleRate, avgF0);
+
+  return {
+    avgF0, avgRMS, peakDBFS: peakDB,
+    spectralCentroid: sc,
+    harmonicEnergyRatio: her,
+    jitterPct: jitterPctVal,
+    sampleRate: state.sampleRate,
+    fftSize: state.fftSize,
+    overlap: state.overlap,
+    smoothing: state.smooth
+  };
+}
+
+function saveSnapshot(){
+  const testType = $("testType").value;
+  const notes = $("notes").value || "";
+  const target = $("targetNote").value || "";
+  const metrics = computeSnapshotMetrics();
+
+  const snap = {
+    id: crypto.randomUUID(),
+    createdAt: nowISO(),
+    testType,
+    targetNote: target,
+    notes,
+    metrics
+  };
+
+  const {db,p} = getActiveProfile();
+  if(!p) return;
+
+  p.sessions = p.sessions || [];
+  p.sessions.push(snap);
+  saveDB(db);
+  renderSavedList();
+  setStatus(`Saved ${testType} snapshot`);
+}
+
+// ---------- UI Events ----------
+async function toggleMain(){
+  // main button: Start / Pause / Resume
+  try{
+    if(!state.running){
+      await startAudio();
+      state.running = true;
+      state.paused = false;
+      $("btnMain").textContent = "Pause";
+      setStatus("Running (tap Pause, long/Stop to end)");
+      requestAnimationFrame(liveFrame);
+      return;
+    }
+    // toggle pause
+    state.paused = !state.paused;
+    $("btnMain").textContent = state.paused ? "Resume" : "Pause";
+    setStatus(state.paused ? "Paused" : "Running");
+  }catch(e){
+    alert("Microphone permission is required. Please allow mic access in browser settings.\n\n" + e.message);
+  }
+}
+function stopAll(){
+  state.running=false;
+  state.paused=false;
+  $("btnMain").textContent="Start";
+  setStatus("Stopped");
+  stopAudioHard();
+}
+
+function createNewProfile(){
+  const db = loadDB();
+  const name = prompt("Enter profile name (e.g., Sādhaka 02):", "Sādhaka " + String((db.profiles?.length||0)+1).padStart(2,"0"));
+  if(!name) return;
+  const p = {id: crypto.randomUUID(), name: name.trim(), sessions:[]};
+  db.profiles = db.profiles || [];
+  db.profiles.push(p);
+  saveDB(db);
+  state.activeProfileId = p.id;
+  refreshProfilesUI();
+}
+
+function updateProfileName(){
+  const name = $("profileName").value.trim();
+  if(!name) return;
+  const {db,p} = getActiveProfile();
+  if(!p) return;
+  p.name = name;
+  saveDB(db);
+  refreshProfilesUI();
+}
+
+function exportJSON(){
+  const db = loadDB();
+  downloadText(`APY_Omkara_Records_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(db,null,2));
+}
+function exportCSV(){
+  const db = loadDB();
+  const rows = [];
+  rows.push([
+    "profile","createdAt","testType","targetNote",
+    "avgF0_Hz","avgRMS","peakDBFS","spectralCentroid_Hz","harmonicEnergyRatio","jitterPct",
+    "sampleRate","fftSize","overlap","smoothing","notes"
+  ].join(","));
+
+  (db.profiles||[]).forEach(p=>{
+    (p.sessions||[]).forEach(s=>{
+      const m = s.metrics||{};
+      rows.push([
+        csv(p.name), csv(s.createdAt), csv(s.testType), csv(s.targetNote||""),
+        num(m.avgF0), num(m.avgRMS), num(m.peakDBFS), num(m.spectralCentroid), num(m.harmonicEnergyRatio), num(m.jitterPct),
+        num(m.sampleRate), num(m.fftSize), num(m.overlap), num(m.smoothing),
+        csv((s.notes||"").replace(/\n/g," "))
+      ].join(","));
+    });
+  });
+
+  downloadText(`APY_Omkara_Records_${new Date().toISOString().slice(0,10)}.csv`, rows.join("\n"));
+
+  function csv(v){
+    v = (v===null || v===undefined) ? "" : String(v);
+    return `"${v.replace(/"/g,'""')}"`;
+  }
+  function num(v){
+    if(!isFinite(v)) return "";
+    return String(v);
+  }
+}
+function printPDF(){
+  // Offline-safe approach: Print -> Save as PDF from browser
+  window.print();
+}
+function deleteAll(){
+  if(!confirm("Delete ALL profiles and sessions from this device?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  ensureProfile();
+  refreshProfilesUI();
+  clearCanvases();
+  setStatus("All local data deleted");
+}
+
+// Long-press detection (mobile-like)
+function setupLongPress(btn, shortFn, longFn){
+  btn.addEventListener("touchstart", (e)=>{
+    e.preventDefault();
+    state.pressTimer = setTimeout(()=>{
+      state.pressTimer=null;
+      longFn();
+    }, 700);
+  }, {passive:false});
+  btn.addEventListener("touchend", (e)=>{
+    e.preventDefault();
+    if(state.pressTimer){
+      clearTimeout(state.pressTimer);
+      state.pressTimer=null;
+      shortFn();
+    }
+  }, {passive:false});
+
+  btn.addEventListener("mousedown", ()=>{
+    state.pressTimer = setTimeout(()=>{
+      state.pressTimer=null;
+      longFn();
+    }, 700);
+  });
+  btn.addEventListener("mouseup", ()=>{
+    if(state.pressTimer){
+      clearTimeout(state.pressTimer);
+      state.pressTimer=null;
+      shortFn();
+    }
+  });
+}
+
+// ---------- Init ----------
+function init(){
+  ensureProfile();
+  refreshProfilesUI();
+  clearCanvases();
+
+  $("profileSel").addEventListener("change", ()=>{
+    state.activeProfileId = $("profileSel").value;
+    refreshProfilesUI();
+  });
+  $("newProfileBtn").addEventListener("click", createNewProfile);
+  $("profileName").addEventListener("change", updateProfileName);
+
+  $("fftSize").addEventListener("change", ()=>{
+    // requires restart to apply
+    alert("FFT size will apply after Stop → Start (restart).");
+  });
+  $("hopMode").addEventListener("change", ()=>{ state.overlap = parseFloat($("hopMode").value); });
+  $("smooth").addEventListener("change", ()=>{ state.smooth = parseFloat($("smooth").value); });
+
+  // Main: short press toggles start/pause/resume; long press stops
+  setupLongPress($("btnMain"), toggleMain, stopAll);
+
+  $("btnStop").addEventListener("click", stopAll);
+  $("btnMark").addEventListener("click", saveSnapshot);
+  $("btnClear").addEventListener("click", clearCanvases);
+
+  $("btnExportJSON").addEventListener("click", exportJSON);
+  $("btnExportCSV").addEventListener("click", exportCSV);
+  $("btnPrint").addEventListener("click", printPDF);
+  $("btnDeleteAll").addEventListener("click", deleteAll);
+
+  setStatus("Idle • Tap Start (allow microphone)");
+}
+init();
+</script>
+</body>
+</html>
